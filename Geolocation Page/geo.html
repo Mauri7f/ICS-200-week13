@@ -1,35 +1,47 @@
-<html>
-    <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script src="jquery-2.1.4.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles.css">    
-    </head>
-    <body>
-    <div id="navbar"><span>Geolocation API</span></div>
-    <div id="wrapper">
-        <button id="location-button">Get User Location</button>
-        <div id="output"></div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Geolocation API</h1>
 
-    <script>
-            $('#location-button').click(function(){
+    <div id="output"></div>
 
-                if(navigator.geolocation)
-                    navigator.geolocation.getCurrentPosition(function(position){
-                        console.log(position);
-                        $.get( "http://maps.googleapis.com/maps/api/geocode/json?latlng="+ position.coords.latitude + "," + position.coords.longitude +"&sensor=false", function(data) {
-                            console.log(data);
-                        })
 
-                        var img = new Image();
-                        img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + position.coords.latitude + "," + position.coords.longitude + "&zoom=13&size=800x400&sensor=false";
-                        $('#output').html(img);
+</body>
+<script>
 
-                    });
-                else
-                    console.log("geolocation is not supported");
+if (!navigator.geolocation) {
+    throw new Error("No geolocation available");
+}    
 
-            });
-    </script>
-    </body>
+
+function success(pos) {
+
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+
+    const markup = `
+    <a href="https://www.openstreetmap.org/#map=16${lat}/${lng}">
+    Your current position: latitude: ${lat}, longitude: ${lng}.
+    </a>
+    `;
+
+    document.getElementById('output').innerHTML = markup;
+
+}
+
+function error() {
+
+}
+
+const options = {};
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
+
+</script>
 </html>
