@@ -34,7 +34,13 @@ function success(pos) {
 
 }
 
-function error() {
+function error(err) {
+
+    if (err.code === 1) {
+        alert("Please allow access to geolocation");
+    } else {
+        alert("Position unavailable");
+    }
 
 }
 
